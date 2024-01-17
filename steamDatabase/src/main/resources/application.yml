@@ -1,0 +1,11 @@
+spring:
+  sql:
+    init.mode: always
+  h2:
+    console.enabled: true
+
+app:
+  name: "steamDatabase"
+
+steam:
+  api-key: "94A07FD5B1267700D27D6D2B3CF9583C"
