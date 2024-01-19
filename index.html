@@ -5,80 +5,86 @@
     <link rel="stylesheet" type="text/css" href="https://flaviovelecela.github.io/main.css">
     <title>CIS 4935 Prototype</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://flaviovelecela.github.io/main.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div>
+    <div id="mainpage">
+        <div class="container">
             <a href="https://flaviovelecela.github.io/loginprompt.html"><button class="login">Login</button></a>
             <a href="https://flaviovelecela.github.io/registerprompt.html"><button class="register"> Register</button></a>
+            <p>Senior Project</p>
+        </div>
+        <div id="all-games">
+            <table id="games-list">
+                <caption id="allgamestitle">All Games Played</caption>
+                <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th>Game Cover</th>
+                        <th>Title</th>
+                        <th>Achievement%</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr class="game-row" data-status="currently-playing" data-status="all-games">
+                        <td class="game-number">1</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Hades_cover_art.jpg/220px-Hades_cover_art.jpg"
+                                alt="Hades"></td>
+                        <td>Hades</td>
+                        <td>6%</td>
+                        <td>N/A</td>
+                        <td>Currently Playing</td>
+                    </tr>
+                    <tr class="game-row" data-status="on-hold">
+                        <td class="game-number">2</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Celeste_box_art_full.png/1200px-Celeste_box_art_full.png"
+                                alt="Celeste"></td>
+                        <td>Celeste</td>
+                        <td>100%</td>
+                        <td>10/10</td>
+                        <td>On Hold</td>
+                    </tr>
+                    <tr class="game-row" data-status="dropped">
+                        <td class="game-number">3</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/6/6d/Bethesda_Starfield.jpg"
+                                alt="Starfield">
+                        </td>
+                        <td>Starfield</td>
+                        <td>32%</td>
+                        <td>N/A</td>
+                        <td>Quit Playing</td>
+                    </tr>
+                    <tr class="game-row" data-status="planning">
+                        <td class="game-number">4</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/8/85/Tunic_cover_art.jpg" alt="Tunic">
+                        </td>
+                        <td>Tunic</td>
+                        <td>7%</td>
+                        <td>N/A</td>
+                        <td>Planning to Play</td>
+                    </tr>
+                    <tr class="game-row" data-status="completed">
+                        <td class="game-number">5</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/d/de/Lies_of_p_cover_art.jpg"
+                                alt="Lies of P">
+                        </td>
+                        <td>Lies of P</td>
+                        <td>100%</td>
+                        <td>10/10</td>
+                        <td>Completed</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div id="all-games">
-        <table id="games-list">
-            <caption id="allgamestitle">All Games Played</caption>
-            <tr>
-                <th>#</th>
-                <th>Game Cover</th>
-                <th>Title</th>
-                <th>Achievement%</th>
-                <th>Rating</th>
-                <th>Status</th>
-            </tr>
-            <tr class="game-row" data-status="currently-playing" data-status="all-games">
-                <td class="game-number">1</td>
-                <td><img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Hades_cover_art.jpg/220px-Hades_cover_art.jpg"
-                        alt="Hades"></td>
-                <td>Hades</td>
-                <td>6%</td>
-                <td>N/A</td>
-                <td>Currently Playing</td>
-            </tr>
-            <tr class="game-row" data-status="on-hold">
-                <td class="game-number">2</td>
-                <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Celeste_box_art_full.png/1200px-Celeste_box_art_full.png"
-                        alt="Celeste"></td>
-                <td>Celeste</td>
-                <td>100%</td>
-                <td>10/10</td>
-                <td>On Hold</td>
-            </tr>
-            <tr class="game-row" data-status="dropped">
-                <td class="game-number">3</td>
-                <td><img src="https://upload.wikimedia.org/wikipedia/en/6/6d/Bethesda_Starfield.jpg" alt="Starfield">
-                </td>
-                <td>Starfield</td>
-                <td>32%</td>
-                <td>N/A</td>
-                <td>Quit Playing</td>
-            </tr>
-            <tr class="game-row" data-status="planning">
-                <td class="game-number">4</td>
-                <td><img src="https://upload.wikimedia.org/wikipedia/en/8/85/Tunic_cover_art.jpg" alt="Tunic"></td>
-                <td>Tunic</td>
-                <td>7%</td>
-                <td>N/A</td>
-                <td>Planning to Play</td>
-            </tr>
-            <tr class="game-row" data-status="completed">
-                <td class="game-number">5</td>
-                <td><img src="https://upload.wikimedia.org/wikipedia/en/d/de/Lies_of_p_cover_art.jpg" alt="Lies of P">
-                </td>
-                <td>Lies of P</td>
-                <td>100%</td>
-                <td>10/10</td>
-                <td>Completed</td>
-            </tr>
-        </table>
-    </div>
-        <table id="footer">
-            <th><a href="#" onclick="return show('all');">All Games Played</a></th>
-            <th><a href="#" onclick="return show('completed');">Completed Games</a></th>
-            <th><a href="#" onclick="return show('planning');">Games Up Next</a></th>
-            <th><a href="#" onclick="return show('currently-playing');">Currently Playing</a></th>
-            <th><a href="#" onclick="return show('on-hold');">Games On Hold</a></th>
-            <th><a href="#" onclick="return show('dropped');">Games/Dropped Quit</a></th>
-        </table>
+    <table id="footer">
+        <th><a href="#" onclick="return show('all');">All Games Played</a></th>
+        <th><a href="#" onclick="return show('completed');">Completed Games</a></th>
+        <th><a href="#" onclick="return show('planning');">Games Up Next</a></th>
+        <th><a href="#" onclick="return show('currently-playing');">Currently Playing</a></th>
+        <th><a href="#" onclick="return show('on-hold');">Games On Hold</a></th>
+        <th><a href="#" onclick="return show('dropped');">Games/Dropped Quit</a></th>
+    </table>
 </body>
-
 </html>
