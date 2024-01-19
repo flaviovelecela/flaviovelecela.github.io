@@ -120,22 +120,20 @@
                 return;
             }
 
-            // Firebase auth reference
-            const auth = firebase.auth();
+            createUserWithEmailAndPassword(email, password);
+        });
 
-            // Create user
-            auth.createUserWithEmailAndPassword(email, password)
+        firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Signed up 
-                    const user = userCredential.user;
-                    // Redirect or update UI
+                    // Signed in 
+                    var user = userCredential.user;
+                    // ...
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    // Show error message to user
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    // ..
                 });
-        });
     </script>
 </body>
 
