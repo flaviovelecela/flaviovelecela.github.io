@@ -1,257 +1,134 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>CIS 4935 Prototype</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            img {
-                width: 54px;
-                height: 72px;
-            }
-            table {
-                margin-left: auto;
-                margin-right: auto;
-            }
-            button {
-                float: right;
-            }
-            html {
-                background-color: black;
-                color: blue;
-                font-family: "Arial";
-                font-size: large;
-                text-align: center;
-            }
-            th {
-                padding: 10px;
-            }
-        </style>
-        <script>
-            function show(shown) {
-                var pages = ["homePage", "completedPage", "planningPage", "currentPage", "onHoldPage", "droppedPage"]
 
-                for (var i = 0; i < pages.length; i++) {
-                    var page = pages[i];
-                    if(page === shown) {
-                        document.getElementById(page).style.display = "block";
-                    } else {
-                        document.getElementById(page).style.display = "none";
-                    }
-                }
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link href="loginprompt.html">
+    <title>CIS 4935 Prototype</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="main.js"></script>
+</head>
 
-                return false;
-            }
-        </script>
-    </head>
-    <body>
-        <div>
-            <button>Sign Up/Log In/Menu</button>
+<body>
+    <div id="mainpage">
+        <div class="container">
+            <a href="loginprompt.html"><button class="login">Login</button></a>
+            <a href="registerprompt.html"><button class="register"> Register</button></a>
+            <p>Senior Project</p>
         </div>
-        <div id="homePage">
-            <table>
-                <caption>All Games Played</caption>
-                <tr>
-                    <th>#</th>
-                    <th>Game Cover</th>
-                    <th>Title</th>
-                    <th>Achievement%</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Hades_cover_art.jpg/220px-Hades_cover_art.jpg" alt="Hades"></td>
-                    <td>Hades</td>
-                    <td>6%</td>
-                    <td>N/A</td>
-                    <td>Currently Playing</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Celeste_box_art_full.png/1200px-Celeste_box_art_full.png" alt="Celeste"></td>
-                    <td>Celeste</td>
-                    <td>100%</td>
-                    <td>10/10</td>
-                    <td>On Hold</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/6/6d/Bethesda_Starfield.jpg" alt="Starfield"></td>
-                    <td>Starfield</td>
-                    <td>32%</td>
-                    <td>N/A</td>
-                    <td>Quit Playing</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/8/85/Tunic_cover_art.jpg" alt="Tunic"></td>
-                    <td>Tunic</td>
-                    <td>7%</td>
-                    <td>N/A</td>
-                    <td>Planning to Play</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/d/de/Lies_of_p_cover_art.jpg" alt="Lies of P"></td>
-                    <td>Lies of P</td>
-                    <td>100%</td>
-                    <td>10/10</td>
-                    <td>Completed</td>
-                </tr>
-            </table>
-            <table>
-                <th><a href="#" onclick="return show('homePage');">All Games Played</a></th>
-                <th><a href="#" onclick="return show('completedPage');">Completed Games</a></th>
-                <th><a href="#" onclick="return show('planningPage');">Games Up Next</a></th>
-                <th><a href="#" onclick="return show('currentPage');">Currently Playing</a></th>
-                <th><a href="#" onclick="return show('onHoldPage');">Games On Hold</a></th>
-                <th><a href="#" onclick="return show('droppedPage');">Games/Dropped Quit</a></th>
-            </table>
-        </div>
-        <div id="completedPage" style="display:none">
-            <table>
-                <caption>Completed Games</caption>
-                <tr>
-                    <th>#</th>
-                    <th>Game Cover</th>
-                    <th>Title</th>
-                    <th>Achievement%</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/d/de/Lies_of_p_cover_art.jpg" alt="Lies of P"></td>
-                    <td>Lies of P</td>
-                    <td>100%</td>
-                    <td>10/10</td>
-                    <td>Completed</td>
-                </tr>
-            </table>
-            <table>
-                <th><a href="#" onclick="return show('homePage');">All Games Played</a></th>
-                <th><a href="#" onclick="return show('completedPage');">Completed Games</a></th>
-                <th><a href="#" onclick="return show('planningPage');">Games Up Next</a></th>
-                <th><a href="#" onclick="return show('currentPage');">Currently Playing</a></th>
-                <th><a href="#" onclick="return show('onHoldPage');">Games On Hold</a></th>
-                <th><a href="#" onclick="return show('droppedPage');">Games/Dropped Quit</a></th>
+        <div id="all-games">
+            <table id="games-list">
+                <caption id="allgamestitle">All Games Played</caption>
+                <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th>Game Cover</th>
+                        <th>Title</th>
+                        <th>Achievement%</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr class="game-row" data-status="currently-playing" data-status="all-games">
+                        <td class="game-number">1</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Hades_cover_art.jpg/220px-Hades_cover_art.jpg"
+                                alt="Hades"></td>
+                        <td>Hades</td>
+                        <td>6%</td>
+                        <td>N/A</td>
+                        <td>Currently Playing</td>
+                    </tr>
+                    <tr class="game-row" data-status="on-hold">
+                        <td class="game-number">2</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Celeste_box_art_full.png/1200px-Celeste_box_art_full.png"
+                                alt="Celeste"></td>
+                        <td>Celeste</td>
+                        <td>100%</td>
+                        <td>10/10</td>
+                        <td>On Hold</td>
+                    </tr>
+                    <tr class="game-row" data-status="dropped">
+                        <td class="game-number">3</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/6/6d/Bethesda_Starfield.jpg"
+                                alt="Starfield">
+                        </td>
+                        <td>Starfield</td>
+                        <td>32%</td>
+                        <td>N/A</td>
+                        <td>Quit Playing</td>
+                    </tr>
+                    <tr class="game-row" data-status="planning">
+                        <td class="game-number">4</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/8/85/Tunic_cover_art.jpg" alt="Tunic">
+                        </td>
+                        <td>Tunic</td>
+                        <td>7%</td>
+                        <td>N/A</td>
+                        <td>Planning to Play</td>
+                    </tr>
+                    <tr class="game-row" data-status="completed">
+                        <td class="game-number">5</td>
+                        <td><img src="https://upload.wikimedia.org/wikipedia/en/d/de/Lies_of_p_cover_art.jpg"
+                                alt="Lies of P">
+                        </td>
+                        <td>Lies of P</td>
+                        <td>100%</td>
+                        <td>10/10</td>
+                        <td>Completed</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-        <div id="planningPage" style="display:none">
-            <table>
-                <caption>Games Up Next</caption>
-                <tr>
-                    <th>#</th>
-                    <th>Game Cover</th>
-                    <th>Title</th>
-                    <th>Achievement%</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/8/85/Tunic_cover_art.jpg" alt="Tunic"></td>
-                    <td>Tunic</td>
-                    <td>7%</td>
-                    <td>N/A</td>
-                    <td>Planning to Play</td>
-                </tr>
-            </table>
-            <table>
-                <th><a href="#" onclick="return show('homePage');">All Games Played</a></th>
-                <th><a href="#" onclick="return show('completedPage');">Completed Games</a></th>
-                <th><a href="#" onclick="return show('planningPage');">Games Up Next</a></th>
-                <th><a href="#" onclick="return show('currentPage');">Currently Playing</a></th>
-                <th><a href="#" onclick="return show('onHoldPage');">Games On Hold</a></th>
-                <th><a href="#" onclick="return show('droppedPage');">Games/Dropped Quit</a></th>
-            </table>
+        <div id="leaderboard"><p id="lbheader">Leaderboard</p>
+            <div class="row">
+                <div class="name">Player 1</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 2</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 3</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 4</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 5</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 6</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 7</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 8</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 9</div>
+                <div class="score">1092</div>
+            </div>
+            <div class="row">
+                <div class="name">Player 10</div>
+                <div class="score">1092</div>
+            </div>
         </div>
-        <div id="currentPage" style="display:none">
-            <table>
-                <caption>Currently Playing</caption>
-                <tr>
-                    <th>#</th>
-                    <th>Game Cover</th>
-                    <th>Title</th>
-                    <th>Achievement%</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Hades_cover_art.jpg/220px-Hades_cover_art.jpg" alt="Hades"></td>
-                    <td>Hades</td>
-                    <td>6%</td>
-                    <td>N/A</td>
-                    <td>Currently Playing</td>
-                </tr>
-            </table>
-            <table>
-                <th><a href="#" onclick="return show('homePage');">All Games Played</a></th>
-                <th><a href="#" onclick="return show('completedPage');">Completed Games</a></th>
-                <th><a href="#" onclick="return show('planningPage');">Games Up Next</a></th>
-                <th><a href="#" onclick="return show('currentPage');">Currently Playing</a></th>
-                <th><a href="#" onclick="return show('onHoldPage');">Games On Hold</a></th>
-                <th><a href="#" onclick="return show('droppedPage');">Games/Dropped Quit</a></th>
-            </table>
-        </div>
-        <div id="onHoldPage" style="display:none">
-            <table>
-                <caption>Games On Hold</caption>
-                <tr>
-                    <th>#</th>
-                    <th>Game Cover</th>
-                    <th>Title</th>
-                    <th>Achievement%</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Celeste_box_art_full.png/1200px-Celeste_box_art_full.png" alt="Celeste"></td>
-                    <td>Celeste</td>
-                    <td>100%</td>
-                    <td>10/10</td>
-                    <td>On Hold</td>
-                </tr>
-            </table>
-            <table>
-                <th><a href="#" onclick="return show('homePage');">All Games Played</a></th>
-                <th><a href="#" onclick="return show('completedPage');">Completed Games</a></th>
-                <th><a href="#" onclick="return show('planningPage');">Games Up Next</a></th>
-                <th><a href="#" onclick="return show('currentPage');">Currently Playing</a></th>
-                <th><a href="#" onclick="return show('onHoldPage');">Games On Hold</a></th>
-                <th><a href="#" onclick="return show('droppedPage');">Games/Dropped Quit</a></th>
-            </table>
-        </div>
-        <div id="droppedPage" style="display:none">
-            <table>
-                <caption>Games Dropped/Quit</caption>
-                <tr>
-                    <th>#</th>
-                    <th>Game Cover</th>
-                    <th>Title</th>
-                    <th>Achievement%</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="https://upload.wikimedia.org/wikipedia/en/6/6d/Bethesda_Starfield.jpg" alt="Starfield"></td>
-                    <td>Starfield</td>
-                    <td>32%</td>
-                    <td>N/A</td>
-                    <td>Quit Playing</td>
-                </tr>
-            </table>
-            <table>
-                <th><a href="#" onclick="return show('homePage');">All Games Played</a></th>
-                <th><a href="#" onclick="return show('completedPage');">Completed Games</a></th>
-                <th><a href="#" onclick="return show('planningPage');">Games Up Next</a></th>
-                <th><a href="#" onclick="return show('currentPage');">Currently Playing</a></th>
-                <th><a href="#" onclick="return show('onHoldPage');">Games On Hold</a></th>
-                <th><a href="#" onclick="return show('droppedPage');">Games/Dropped Quit</a></th>
-            </table>
-        </div>
-    </body>
+    </div>
+    <table id="footer">
+        <th><a href="#" onclick="return show('all');">All Games Played</a></th>
+        <th><a href="#" onclick="return show('completed');">Completed Games</a></th>
+        <th><a href="#" onclick="return show('planning');">Games Up Next</a></th>
+        <th><a href="#" onclick="return show('currently-playing');">Currently Playing</a></th>
+        <th><a href="#" onclick="return show('on-hold');">Games On Hold</a></th>
+        <th><a href="#" onclick="return show('dropped');">Games/Dropped Quit</a></th>
+    </table>
+</body>
+
 </html>
