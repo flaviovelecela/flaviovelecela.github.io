@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class SteamUser {
 
-    private int steamId;
+    private String steamId;
     private String userName;
     private List<game> gameList;
 }
