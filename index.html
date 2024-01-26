@@ -2,17 +2,56 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="https://flaviovelecela.github.io/main.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
     <title>CIS 4935 Prototype</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://flaviovelecela.github.io/main.js"></script>
 </head>
 
 <body>
     <div id="mainpage">
         <div class="container">
-            <a href="https://flaviovelecela.github.io/loginprompt.html"><button class="login">Login</button></a>
-            <a href="https://flaviovelecela.github.io/registerprompt.html"><button class="register"> Register</button></a>
+            <button id="loginBtn">Login</button>
+            <button id="registerBtn"> Register</button>
+
+            <div id="login" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Login</h2>
+                    <form id="loginForm">
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" name="email">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password">
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="register" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Register</h2>
+                    <form id="registerForm">
+                        <label for="emailInp">Email:</label>
+                        <input type="email" id="emailInp" name="email" placeholder="Email" required>
+
+                        <label for="passwordInp">Password:</label>
+                        <input type="password" id="passwordInp" name="password" placeholder="Password" required>
+
+                        <label for="cfrmpassInp">Confirm Password:</label>
+                        <input type="password" id="cfrmpassInp" name="confirm-password" placeholder="Confirm Password" required>
+
+                        <label for="floatingPassword">First Name</label>
+                        <input type="text" class="form-control" id="fnameInp" placeholder="First Name" required>
+
+                        <label for="floatingPassword">Last Name</label>
+                        <input type="text" class="form-control" id="lnameInp" placeholder="Last Name" required>
+
+                        <button type="submit">Register</button>
+                    </form>
+                </div>
+            </div>
+
             <p>Senior Project</p>
         </div>
         <div id="all-games">
@@ -87,28 +126,10 @@
         <th><a href="#" onclick="return show('dropped');">Games/Dropped Quit</a></th>
     </table>
 
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    <h2 id="msg"></h2>
+    <h2 id="greet"></h2>
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAX6PzdmeSH3zbMjTdzJ9QjSDFOr-i_I10",
-    authDomain: "senior-project-2024s.firebaseapp.com",
-    projectId: "senior-project-2024s",
-    storageBucket: "senior-project-2024s.appspot.com",
-    messagingSenderId: "92548243517",
-    appId: "1:92548243517:web:b03fc1b33c0c4517d48a54",
-    measurementId: "G-9275MPZELC"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    <script type="module" src="main.js"></script>
 </body>
+
 </html>
