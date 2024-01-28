@@ -27,15 +27,15 @@ public class SteamUserController {
     }
 
     @GetMapping(value = "/getGames")
-    GetOwnedGames getSteamUserGames(@RequestBody String userId) throws SteamApiException {
+    GetOwnedGames getSteamUserGames(@RequestBody String userId) throws SteamApiException, JsonProcessingException {
         return steamUserService.GetOwnedGamesRequest(userId);
     }
 
-    @GetMapping(value = "/getAchievements")
-    GetPlayerAchievements getPlayerAchievements (@RequestBody Integer appId) throws SteamApiException {
-
-        return steamUserService.GetPlayerAchievementsRequest(appId);
-    }
+//    @GetMapping(value = "/getAchievements")
+//    GetPlayerAchievements getPlayerAchievements (@RequestBody Integer appId) throws SteamApiException {
+//
+//        return steamUserService.GetPlayerAchievementsRequest(appId);
+//    }
 
     // maybe use getStats instead? This one has the same problem as get Achievements so neither of them work
 //    @GetMapping(value = "/getStats")

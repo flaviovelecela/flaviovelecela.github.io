@@ -11,6 +11,6 @@ public class SteamUser {
 
     private String steamId;
     private String userName;
-    private List<game> gameList;
+    private List<GameInfo> gameList;
 }
 
