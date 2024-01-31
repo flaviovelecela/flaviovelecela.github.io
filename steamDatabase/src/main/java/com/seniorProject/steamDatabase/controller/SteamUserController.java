@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 public class SteamUserController {
 
@@ -27,7 +29,7 @@ public class SteamUserController {
     }
 
     @GetMapping(value = "/getGames")
-    GetOwnedGames getSteamUserGames(@RequestBody String userId) throws SteamApiException, JsonProcessingException {
+    GetOwnedGames getSteamUserGames(@RequestBody String userId) throws SteamApiException, IOException {
         return steamUserService.GetOwnedGamesRequest(userId);
     }
 

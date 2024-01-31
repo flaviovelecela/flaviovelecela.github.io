@@ -1,5 +1,6 @@
 package com.seniorProject.steamDatabase.service;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,6 +14,7 @@ import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
 import com.lukaspradel.steamapi.webapi.request.GetPlayerAchievementsRequest;
 import com.seniorProject.steamDatabase.model.GameInfo;
 import com.seniorProject.steamDatabase.model.SteamUser;
+import com.seniorProject.steamDatabase.repository.SteamGameRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.*;
 
 @Service
 @Component
@@ -30,11 +33,12 @@ import java.util.List;
 public class SteamUserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SteamUserService.class);
+    private final SteamGameRepository steamGameRepository;
     private final ObjectMapper mapper;
     @Value("${steam.api-key}")
     private String API_KEY;
     private SteamUser steamUser;
-    private GameInfo gameInfo;
+    private DecimalFormat df = new DecimalFormat("#.##");
 
     public ResponseEntity<SteamUser> createUser(String jsonObject) throws JsonProcessingException {
 //        JsonNode jsonNode = mapper.readTree(jsonObject);
@@ -48,18 +52,17 @@ public class SteamUserService {
         return ResponseEntity.ofNullable(steamUser);
     }
 
-    public GetOwnedGames GetOwnedGamesRequest(String userId) throws SteamApiException, JsonProcessingException {
-        TypeReference<List<GetOwnedGames>> listType = new TypeReference<>() {};
+    public GetOwnedGames GetOwnedGamesRequest(String userId) throws SteamApiException, IOException {
 
         SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
         GetOwnedGamesRequest request = new GetOwnedGamesRequest.GetOwnedGamesRequestBuilder(userId).includeAppInfo(true).buildRequest();
-        GetOwnedGames getOwnedGames = client.<GetOwnedGames>processRequest(request);
+        GetOwnedGames getOwnedGames = client.processRequest(request);
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String ownedGamesJson = ow.writeValueAsString(getOwnedGames);
-        List<GetOwnedGames> getOwnedGamesList = mapper.readValue(ownedGamesJson, listType);
+        JsonNode jsonNode = mapper.readTree(ownedGamesJson).get("response").get("games");
 
-        mapToObject(getOwnedGamesList);
+        mapToObject(jsonNode);
         return getOwnedGames;
 
     }
@@ -80,22 +83,23 @@ public class SteamUserService {
 //        return getUserStatsForGame;
 //    }
 
-    private void mapToObject(List<GetOwnedGames> ownedGamesList) throws JsonProcessingException, SteamApiException {
+    private void mapToObject(JsonNode ownedGamesList) throws SteamApiException {
         LOGGER.info("MAPPING: ");
 
         List<GameInfo> gameInfoList = new ArrayList<>();
-        int gameNum = 0;
 
-        for (GetOwnedGames getOwnedGames : ownedGamesList) {
-            GameInfo gameInfo = new GameInfo();
-            JsonNode jsonNode = mapper.readTree(String.valueOf(getOwnedGames));
-            gameInfo.setAppId(jsonNode.get("response").get("games").get(gameNum).get("appid").asInt());
-            gameInfo.setName(jsonNode.get("response").get("games").get(gameNum).get("name").asText());
-            gameInfo.setTotalPlaytime(jsonNode.get("response").get("games").get(gameNum).get("playtime_forever").asInt());
-            gameInfo.setAchievements(GetPlayerAchievementsRequest(gameInfo.getAppId()));
-            gameInfo.setImageIcon(jsonNode.get("response").get("games").get(gameNum).get("img_icon_url").asText());
-            gameInfoList.add(gameInfo);
-            gameNum+=1;
+        if (ownedGamesList.isArray()) {
+            for (JsonNode jsonNode : ownedGamesList) {
+                GameInfo gameInfo = new GameInfo();
+                gameInfo.setAppId(jsonNode.get("appid").asInt());
+                gameInfo.setName(jsonNode.get("name").asText());
+                gameInfo.setTotalPlaytime(Double.parseDouble(df.format(jsonNode.get("playtime_forever").asInt()/60.0)));
+//                gameInfo.setAchievements(GetPlayerAchievementsRequest(gameInfo.getAppId()));
+                gameInfo.setImageIcon(jsonNode.get("img_icon_url").asText());
+                LOGGER.warn(String.valueOf(gameInfo));
+                gameInfoList.add(gameInfo);
+            }
         }
+        steamGameRepository.saveAll(gameInfoList);
     }
 }

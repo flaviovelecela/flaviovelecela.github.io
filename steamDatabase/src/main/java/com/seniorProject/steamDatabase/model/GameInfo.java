@@ -16,7 +16,7 @@ public class GameInfo {
     @Column(name = "NAME")
     private String name;
     @Column(name = "TOTAL_PLAYTIME")
-    private int totalPlaytime;
+    private double totalPlaytime;
     @Column(name = "ACHIEVEMENTS")
     private String achievements;
     @Column(name = "IMAGE_ICON")
