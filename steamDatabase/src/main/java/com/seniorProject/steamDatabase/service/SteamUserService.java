@@ -9,11 +9,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import com.lukaspradel.steamapi.data.json.ownedgames.GetOwnedGames;
 import com.lukaspradel.steamapi.data.json.playerachievements.GetPlayerAchievements;
-import com.lukaspradel.steamapi.data.json.playerstats.GetUserStatsForGame;
 import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
 import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
 import com.lukaspradel.steamapi.webapi.request.GetPlayerAchievementsRequest;
-import com.lukaspradel.steamapi.webapi.request.GetUserStatsForGameRequest;
 import com.seniorProject.steamDatabase.model.GameInfo;
 import com.seniorProject.steamDatabase.model.SteamUser;
 import com.seniorProject.steamDatabase.repository.SteamGameRepository;
@@ -39,16 +37,17 @@ public class SteamUserService {
     private final ObjectMapper mapper;
     @Value("${steam.api-key}")
     private String API_KEY;
+    private SteamUser steamUser;
     private DecimalFormat df = new DecimalFormat("#.##");
 
-    public ResponseEntity<SteamUser> createUser(String steamId) throws IOException, SteamApiException {
+    public ResponseEntity<SteamUser> createUser(String jsonObject) throws JsonProcessingException {
 //        JsonNode jsonNode = mapper.readTree(jsonObject);
         // mapper part doesn't work yet
-        SteamUser steamUser = new SteamUser();
-        steamUser.setSteamId(steamId);
+        steamUser = new SteamUser();
+        steamUser.setSteamId(jsonObject);
     //  user.setUserName(jsonNode.get("userName").asText());
-        LOGGER.warn(String.valueOf(steamUser.getSteamId()));
-        GetOwnedGamesRequest(steamUser.getSteamId());
+    //  user.setGameList(jsonNode.get("gameList"));
+        LOGGER.warn(steamUser.getSteamId());
 
         return ResponseEntity.ofNullable(steamUser);
     }
@@ -63,28 +62,28 @@ public class SteamUserService {
         String ownedGamesJson = ow.writeValueAsString(getOwnedGames);
         JsonNode jsonNode = mapper.readTree(ownedGamesJson).get("response").get("games");
 
-        mapToObject(jsonNode, userId);
+        mapToObject(jsonNode);
         return getOwnedGames;
 
     }
 
-    public GetPlayerAchievements GetPlayerAchievementsRequest(int appId, String userId) throws SteamApiException {
+    public String GetPlayerAchievementsRequest(Integer appId) throws SteamApiException {
         SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
-        GetPlayerAchievementsRequest request = new GetPlayerAchievementsRequest.GetPlayerAchievementsRequestBuilder(userId, appId).buildRequest();
-        GetPlayerAchievements getPlayerAchievements = client.processRequest(request);
+        GetPlayerAchievementsRequest request = new GetPlayerAchievementsRequest.GetPlayerAchievementsRequestBuilder(steamUser.getSteamId(), appId).buildRequest();
+        GetPlayerAchievements getPlayerAchievements = client.<GetPlayerAchievements> processRequest(request);
 
-        return getPlayerAchievements;
+        return getPlayerAchievements.toString();
     }
 
-//    public GetUserStatsForGame GetUserStatsForGameRequest(int appId, String userId) throws SteamApiException {
+//    public static GetUserStatsForGame GetUserStatsForGameRequest(int appId) throws SteamApiException {
 //        SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
-//        GetUserStatsForGameRequest request = new GetUserStatsForGameRequest.GetUserStatsForGameRequestBuilder(userId, appId).buildRequest();
-//        GetUserStatsForGame getUserStatsForGame = client.processRequest(request);
+//        GetUserStatsForGameRequest request = new GetUserStatsForGameRequest.GetUserStatsForGameRequestBuilder(steamUser.getSteamId(), appId).buildRequest();
+//        GetUserStatsForGame getUserStatsForGame = client.<GetUserStatsForGame> processRequest(request);
 //
 //        return getUserStatsForGame;
 //    }
 
-    private void mapToObject(JsonNode ownedGamesList, String userId) throws SteamApiException {
+    private void mapToObject(JsonNode ownedGamesList) throws SteamApiException {
         LOGGER.info("MAPPING: ");
 
         List<GameInfo> gameInfoList = new ArrayList<>();
@@ -93,12 +92,10 @@ public class SteamUserService {
             for (JsonNode jsonNode : ownedGamesList) {
                 GameInfo gameInfo = new GameInfo();
                 gameInfo.setAppId(jsonNode.get("appid").asInt());
-                LOGGER.warn(String.valueOf(gameInfo.getAppId()));
                 gameInfo.setName(jsonNode.get("name").asText());
                 gameInfo.setTotalPlaytime(Double.parseDouble(df.format(jsonNode.get("playtime_forever").asInt()/60.0)));
-//                gameInfo.setAchievements(String.valueOf(GetPlayerAchievementsRequest(gameInfo.getAppId(), userId)));
+//                gameInfo.setAchievements(GetPlayerAchievementsRequest(gameInfo.getAppId()));
                 gameInfo.setImageIcon(jsonNode.get("img_icon_url").asText());
-                gameInfo.setRating("N/A");
                 LOGGER.warn(String.valueOf(gameInfo));
                 gameInfoList.add(gameInfo);
             }

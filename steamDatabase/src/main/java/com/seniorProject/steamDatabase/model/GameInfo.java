@@ -21,6 +21,4 @@ public class GameInfo {
     private String achievements;
     @Column(name = "IMAGE_ICON")
     private String imageIcon;
-    @Column(name = "RATING")
-    private String rating;
 }

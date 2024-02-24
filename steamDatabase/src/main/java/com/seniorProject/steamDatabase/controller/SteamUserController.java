@@ -24,7 +24,7 @@ public class SteamUserController {
     }
 
     @GetMapping(value ="/createUser")
-    ResponseEntity<SteamUser> createUser(@RequestBody String steamId) throws IOException, SteamApiException {
+    ResponseEntity<SteamUser> createUser(@RequestBody String steamId) throws JsonProcessingException {
         return steamUserService.createUser(steamId);
     }
 
