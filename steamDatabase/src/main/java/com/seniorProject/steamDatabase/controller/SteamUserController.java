@@ -24,7 +24,7 @@ public class SteamUserController {
     }
 
     @GetMapping(value ="/createUser")
-    ResponseEntity<SteamUser> createUser(@RequestBody String steamId) throws JsonProcessingException {
+    ResponseEntity<SteamUser> createUser(@RequestBody String steamId) throws IOException, SteamApiException {
         return steamUserService.createUser(steamId);
     }
 
@@ -39,9 +39,4 @@ public class SteamUserController {
 //        return steamUserService.GetPlayerAchievementsRequest(appId);
 //    }
 
-    // maybe use getStats instead? This one has the same problem as get Achievements so neither of them work
-//    @GetMapping(value = "/getStats")
-//    GetUserStatsForGame getUserStatsForGame (@RequestBody Integer appId) throws SteamApiException {
-//        return steamUserService.GetUserStatsForGameRequest(appId);
-//    }
 }
