@@ -46,12 +46,12 @@ public class SteamUserService {
         steamUser.setSteamId(steamId);
     //  user.setUserName(jsonNode.get("userName").asText());
         LOGGER.warn(String.valueOf(steamUser.getSteamId()));
-        GetOwnedGamesRequest(steamUser.getSteamId());
+        steamUser.setGameList(getOwnedGamesRequest(steamUser.getSteamId()));
 
         return ResponseEntity.ofNullable(steamUser);
     }
 
-    public GetOwnedGames GetOwnedGamesRequest(String userId) throws SteamApiException, IOException {
+    public List<GameInfo> getOwnedGamesRequest(String userId) throws SteamApiException, IOException {
 
         SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
         GetOwnedGamesRequest request = new GetOwnedGamesRequest.GetOwnedGamesRequestBuilder(userId).includeAppInfo(true).buildRequest();
@@ -61,8 +61,7 @@ public class SteamUserService {
         String ownedGamesJson = ow.writeValueAsString(getOwnedGames);
         JsonNode jsonNode = mapper.readTree(ownedGamesJson).get("response").get("games");
 
-        mapToObject(jsonNode, userId);
-        return getOwnedGames;
+        return mapToObject(jsonNode, userId);
 
     }
 
@@ -74,7 +73,6 @@ public class SteamUserService {
         SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
         GetPlayerAchievementsRequest request = new GetPlayerAchievementsRequest.GetPlayerAchievementsRequestBuilder(userId, appId).buildRequest();
         GetPlayerAchievements getPlayerAchievements = client.processRequest(request);
-        LOGGER.warn(String.valueOf(getPlayerAchievements));
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String achievementsJson = ow.writeValueAsString(getPlayerAchievements);
@@ -90,12 +88,11 @@ public class SteamUserService {
             }
         }
         int percentage = achieved * 100 / size;
-        LOGGER.warn("PERCENTAGE: " + percentage);
 
         return percentage;
     }
 
-    private void mapToObject(JsonNode ownedGamesList, String userId) throws SteamApiException, JsonProcessingException {
+    private List<GameInfo> mapToObject(JsonNode ownedGamesList, String userId) throws SteamApiException, JsonProcessingException {
         LOGGER.info("MAPPING: ");
 
         List<GameInfo> gameInfoList = new ArrayList<>();
@@ -104,7 +101,6 @@ public class SteamUserService {
             for (JsonNode jsonNode : ownedGamesList) {
                 GameInfo gameInfo = new GameInfo();
                 gameInfo.setAppId(jsonNode.get("appid").asInt());
-                LOGGER.warn(String.valueOf(gameInfo.getAppId()));
                 gameInfo.setName(jsonNode.get("name").asText());
                 gameInfo.setTotalPlaytime(Double.parseDouble(df.format(jsonNode.get("playtime_forever").asInt()/60.0)));
                 try {
@@ -115,10 +111,10 @@ public class SteamUserService {
                 }
                 gameInfo.setImageIcon(jsonNode.get("img_icon_url").asText());
                 gameInfo.setRating("N/A");
-                LOGGER.warn(String.valueOf(gameInfo));
                 gameInfoList.add(gameInfo);
             }
         }
         steamGameRepository.saveAll(gameInfoList);
+        return gameInfoList;
     }
 }
