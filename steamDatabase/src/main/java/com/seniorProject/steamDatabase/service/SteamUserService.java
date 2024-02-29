@@ -87,9 +87,8 @@ public class SteamUserService {
                 }
             }
         }
-        int percentage = achieved * 100 / size;
 
-        return percentage;
+        return achieved * 100 / size;
     }
 
     private List<GameInfo> mapToObject(JsonNode ownedGamesList, String userId) throws SteamApiException, JsonProcessingException {
@@ -103,12 +102,6 @@ public class SteamUserService {
                 gameInfo.setAppId(jsonNode.get("appid").asInt());
                 gameInfo.setName(jsonNode.get("name").asText());
                 gameInfo.setTotalPlaytime(Double.parseDouble(df.format(jsonNode.get("playtime_forever").asInt()/60.0)));
-                try {
-                    gameInfo.setAchievements(String.valueOf(GetPlayerAchievementsRequest(gameInfo.getAppId(), userId)));
-                }
-                catch (SteamApiException | ArithmeticException e) {
-                    gameInfo.setAchievements("There are no achievements for this game");
-                }
                 gameInfo.setImageIcon(jsonNode.get("img_icon_url").asText());
                 gameInfo.setRating("N/A");
                 gameInfoList.add(gameInfo);
@@ -117,4 +110,14 @@ public class SteamUserService {
         steamGameRepository.saveAll(gameInfoList);
         return gameInfoList;
     }
+
+    public int achievementsRequest(int appId, String steamId) {
+        try {
+            return GetPlayerAchievementsRequest(appId, steamId);
+        }
+        catch (SteamApiException | ArithmeticException | JsonProcessingException e) {
+            return -1;
+        }
+    }
 }
+

@@ -2,9 +2,6 @@ package com.seniorProject.steamDatabase.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lukaspradel.steamapi.core.exception.SteamApiException;
-import com.lukaspradel.steamapi.data.json.ownedgames.GetOwnedGames;
-import com.lukaspradel.steamapi.data.json.playerachievements.GetPlayerAchievements;
-import com.lukaspradel.steamapi.data.json.playerstats.GetUserStatsForGame;
 import com.seniorProject.steamDatabase.model.GameInfo;
 import com.seniorProject.steamDatabase.model.SteamUser;
 import com.seniorProject.steamDatabase.service.SteamUserService;
@@ -34,10 +31,10 @@ public class SteamUserController {
         return steamUserService.getOwnedGamesRequest(steamId);
     }
 
-//    @GetMapping(value = "/getAchievements")
-//    GetPlayerAchievements getPlayerAchievements (@RequestBody Integer appId) throws SteamApiException {
-//
-//        return steamUserService.GetPlayerAchievementsRequest(appId);
-//    }
+    @GetMapping(value = "/getAchievements/{steamId}/{appId}")
+    int getPlayerAchievements (@PathVariable String steamId, @PathVariable int appId) {
+
+        return steamUserService.achievementsRequest(appId, steamId);
+    }
 
 }
