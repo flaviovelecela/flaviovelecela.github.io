@@ -23,7 +23,7 @@ public class SteamUserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SteamUserService.class);
     private final ObjectMapper mapper;
-    @Value("${steam.api-key")
+    @Value("${steam.api-key}")
     private String API_KEY;
 
     public ResponseEntity<SteamUser> createUser(String jsonObject) throws JsonProcessingException {
