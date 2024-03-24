@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class SteamUserController {
 
     private final SteamUserService steamUserService;
@@ -34,6 +35,11 @@ public class SteamUserController {
     int getPlayerAchievements (@PathVariable String steamId, @PathVariable int appId) {
 
         return steamUserService.achievementsRequest(appId, steamId);
+    }
+
+    @GetMapping(value = "/getRecentPlaytime/{steamId}")
+    double getRecentPlaytime (@PathVariable String steamId) throws JsonProcessingException, SteamApiException {
+        return steamUserService.recentlyPlayedGames(steamId);
     }
 
 }

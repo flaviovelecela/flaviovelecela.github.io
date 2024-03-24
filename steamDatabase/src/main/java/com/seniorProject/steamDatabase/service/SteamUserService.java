@@ -7,11 +7,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.lukaspradel.steamapi.core.exception.SteamApiException;
 import com.lukaspradel.steamapi.data.json.ownedgames.GetOwnedGames;
 import com.lukaspradel.steamapi.data.json.playerachievements.GetPlayerAchievements;
-import com.lukaspradel.steamapi.data.json.playerstats.GetUserStatsForGame;
 import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
 import com.lukaspradel.steamapi.webapi.request.GetOwnedGamesRequest;
 import com.lukaspradel.steamapi.webapi.request.GetPlayerAchievementsRequest;
-import com.lukaspradel.steamapi.webapi.request.GetUserStatsForGameRequest;
 import com.seniorProject.steamDatabase.model.GameInfo;
 import com.seniorProject.steamDatabase.model.SteamUser;
 import com.seniorProject.steamDatabase.repository.SteamGameRepository;
@@ -56,6 +54,7 @@ public class SteamUserService {
         SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
         GetOwnedGamesRequest request = new GetOwnedGamesRequest.GetOwnedGamesRequestBuilder(userId).includeAppInfo(true).buildRequest();
         GetOwnedGames getOwnedGames = client.processRequest(request);
+        LOGGER.warn(String.valueOf(getOwnedGames));
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String ownedGamesJson = ow.writeValueAsString(getOwnedGames);
@@ -118,6 +117,27 @@ public class SteamUserService {
         catch (SteamApiException | ArithmeticException | JsonProcessingException e) {
             return -1;
         }
+    }
+
+    public double recentlyPlayedGames(String steamID) throws SteamApiException, JsonProcessingException {
+        double playtime = 0;
+
+        SteamWebApiClient client = new SteamWebApiClient.SteamWebApiClientBuilder(API_KEY).build();
+        GetOwnedGamesRequest request = new GetOwnedGamesRequest.GetOwnedGamesRequestBuilder(steamID).includeAppInfo(true).buildRequest();
+        GetOwnedGames getOwnedGames = client.processRequest(request);
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String getRecentPlayGames = ow.writeValueAsString(getOwnedGames);
+        JsonNode playtimeJson = mapper.readTree(getRecentPlayGames).get("response").get("games");
+
+        if (playtimeJson.isArray()) {
+            for (JsonNode jsonNode : playtimeJson) {
+                if (!(jsonNode.get("playtime_2weeks") == null)) {
+                    playtime += jsonNode.get("playtime_2weeks").asInt();
+                }
+            }
+        }
+        return Double.parseDouble(df.format(playtime/60.0));
     }
 }
 

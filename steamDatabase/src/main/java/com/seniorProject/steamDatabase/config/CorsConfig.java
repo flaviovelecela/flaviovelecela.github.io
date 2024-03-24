@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // You can restrict paths with specific ones instead of /**
-                        .allowedOrigins("http://localhost:3000", "https://www.upstreamreact.com", "https://2928-75-102-132-166.ngrok-free.app") // The origin your React app is served from
+                        .allowedOrigins("http://localhost:3000", "https://www.upstreamreact.com", "https://75bc-75-102-132-166.ngrok-free.app") // The origin your React app is served from
                         .allowedMethods("GET", "POST", "PUT", "DELETE") // Whatever methods you need
                         .allowCredentials(true)
                         .allowedHeaders("*")
